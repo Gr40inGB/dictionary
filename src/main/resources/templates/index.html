@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+    <link rel="stylesheet" th:href="@{style.css}">
+    <!--    <link rel="stylesheet"  href="styles/style.css">-->
+</head>
+<body>
+<div class="header center">
+    <!--    <button class="game button">Game</button>-->
+    <!--    <button class="all button">All</button>-->
+    <button class="button">Me</button>
+</div>
+<!--//action="translate/create" -->
+<form class="main__form center" th:action="@{/translate/create}" th:object="${translate_current}" method="post">
+    <div class="form__group">
+        <input type="text" th:field="*{englishExpression}" id="english" class="form__field"
+               placeholder="Your Email">
+        <label for="english" class="form__label">English</label>
+    </div>
+    <div class="form__group">
+        <input type="text" th:field="*{russianExpression}" id="russian" class="form__field"
+               placeholder="Your Message">
+        <label for="russian" class="form__label">Russian</label>
+    </div>
+    <div class="main__buttons">
+        <button class="button" type="button">Translate</button>
+        <button class="button" type="submit">Add</button>
+    </div>
+
+</form>
+<table class="translation-list center">
+    <tbody>
+    <tr class="translation-item" th:each="translation : ${translations}">
+
+    <!--        <td th:text="${translation.id}"></td>-->
+    <td th:text="${translation.englishExpression}"></td>
+    <td th:text="${translation.russianExpression}"></td>
+    <!--        <td th:text="${translation.englishTranscription}"></td>-->
+    <td th:text="${translation.successAttempts}"></td>
+    <td th:text="${#temporals.format(translation.initDate, 'HH:mm dd.MM.yy')}"></td>
+
+    <td th:datetime="${translation.initDate}"></td>
+    <!--        <a th:href="@{/edit/{remindId}(remindId=${remind.id})}">Edit</a>-->
+    </tbody>
+</table>
+
+
+</body>
+</html>
