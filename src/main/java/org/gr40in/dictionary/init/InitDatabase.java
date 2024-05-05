@@ -1,4 +1,4 @@
-package org.gr40in.dictionary.service;
+package org.gr40in.dictionary.init;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,18 +22,17 @@ public class InitDatabase {
 
     private final DictionaryRepository repository;
 
-    private final String initFilePath = "dictionary.txt";
+    private final String initFilePath = "src/main/resources/dictionary.txt";
 
 
     @EventListener(ContextRefreshedEvent.class)
     private void initDatabase() {
 
         List<Translation> list = new ArrayList<>();
-//        Path initFile = Path.of(initFilePath);
         if (!repository.findAll().isEmpty()) return;
 
 
-        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Richard\\Desktop\\english\\dictionary\\src\\main\\resources\\init-data\\dictionary.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(initFilePath))) {
             String line;
             while ((line = br.readLine()) != null) {
                 var translation = parseLineToTranslation(line);
@@ -56,13 +55,11 @@ public class InitDatabase {
                     .englishExpression(parts[0])
                     .russianExpression(parts[1])
                     .build();
-//        else if (parts.length == 3) return
         return Translation.builder()
                 .englishExpression(parts[0])
                 .englishTranscription(parts[1])
                 .russianExpression(parts[2])
                 .build();
-
     }
 
 }

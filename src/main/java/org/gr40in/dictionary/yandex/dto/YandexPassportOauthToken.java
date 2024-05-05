@@ -1,6 +1,5 @@
-package org.gr40in.dictionary.dto;
+package org.gr40in.dictionary.yandex.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 

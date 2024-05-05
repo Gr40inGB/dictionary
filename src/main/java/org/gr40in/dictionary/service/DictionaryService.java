@@ -1,28 +1,16 @@
 package org.gr40in.dictionary.service;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.sun.net.httpserver.Request;
-import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.gr40in.dictionary.dao.Translation;
 import org.gr40in.dictionary.dto.TranslationDto;
 import org.gr40in.dictionary.dto.TranslationMapper;
-import org.gr40in.dictionary.dto.YandexPassportOauthToken;
-import org.gr40in.dictionary.dto.YandexToken;
 import org.gr40in.dictionary.repository.DictionaryRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.reactive.function.client.WebClient;
 
 //import java.net.http.HttpResponse;
-import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 

@@ -5,7 +5,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 @Slf4j
 @Service
-@Order(1)
+@Order(3)
 public class LocalTranslateService implements TranslateService {
     @Override
     public String getEnglishTranslate(String russianExpression) {
