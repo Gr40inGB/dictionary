@@ -32,6 +32,7 @@ public class InitDatabase {
         if (!repository.findAll().isEmpty()) return;
 
 
+
         try (BufferedReader br = new BufferedReader(new FileReader(initFilePath))) {
             String line;
             while ((line = br.readLine()) != null) {
