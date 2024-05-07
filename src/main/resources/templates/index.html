@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Main page</title>
     <link rel="stylesheet" th:href="@{style.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--    <link rel="stylesheet"  href="styles/style.css">-->
 </head>
 <body>
@@ -25,24 +26,90 @@
         <label for="russian" class="form__label">Russian</label>
     </div>
     <div class="main__buttons">
-        <button class="button" type="button">Translate</button>
+        <!--        <button class="button" type="button" onclick="translate()">Translate</button>-->
+        <button class="button" type="button" onclick="translate_f()">Translate</button>
+        <!--        <button class="button" type="submit" th:name="${'action_type'}" th:value="Add">Add</button>-->
         <button class="button" type="submit">Add</button>
     </div>
-
 </form>
+
+<script>
+    function translate_f() {
+        // Retrieve the English expression from the input field
+        var englishExpression = document.getElementById('english').value;
+        console.log(englishExpression);
+
+        var translationDto = {
+            id: 0, // Replace with actual values or retrieve from form fields
+            englishExpression: document.getElementById('english').value,
+            russianExpression: ' ',
+            englishTranscription: "",
+            successAttempts: 0,
+            initDate: "2024-05-07T12:00:00" // Example date format
+        };
+
+        // Implement your translation logic here, for example, using AJAX to send the English expression to the server and receive the translation
+        // Send an AJAX request to the server to translate the English expression
+        $.ajax({
+            url: '/api/translate',
+            type: 'post',
+            contentType: true,
+            xhrFields: {
+                id: 0, // Replace with actual values or retrieve from form fields
+                englishExpression: document.getElementById('english').value,
+                russianExpression: ' ',
+                englishTranscription: "",
+                successAttempts: 0,
+                initDate: "2024-05-07T12:00:00", // Example date format
+            },
+            success: function (data) {
+                // Update the value of the Russian expression input field with the translated text
+                console.log(data.russianExpression);
+                $('#russian').val(data.russianExpression);
+            },
+            error: function () {
+                // Handle errors
+                alert("An error occurred while translating.");
+            }
+        });
+
+
+        // $.ajax({
+        //     url: '/api/translate',
+        //     type: 'post',
+        //     dataType: 'APPLICATION_FORM_URLENCODED_VALUE',
+        //     data: Value.stringify(translationDto),
+        //     success: function (data) {
+        //         // Update the value of the Russian expression input field with the translated text
+        //         $('#russian').val(data.russianExpression);
+        //     },
+        //     error: function () {
+        //         // Handle errors
+        //         alert("An error occurred while translating.");
+        //     }
+        // });
+        // For demonstration, let's assume the translation is received here
+        // var translatedText = "Translated Russian text"; // Replace this with your actual translation
+
+        // Set the translated text to the Russian expression input field
+        // document.getElementById('russian').value = translatedText;
+    }
+</script>
+
+
 <table class="translation-list center">
     <tbody>
     <tr class="translation-item" th:each="translation : ${translations}">
 
-    <!--        <td th:text="${translation.id}"></td>-->
-    <td th:text="${translation.englishExpression}"></td>
-    <td th:text="${translation.russianExpression}"></td>
-    <!--        <td th:text="${translation.englishTranscription}"></td>-->
-    <td th:text="${translation.successAttempts}"></td>
-    <td th:text="${#temporals.format(translation.initDate, 'HH:mm dd.MM.yy')}"></td>
+        <!--        <td th:text="${translation.id}"></td>-->
+        <td th:text="${translation.englishExpression}"></td>
+        <td th:text="${translation.russianExpression}"></td>
+        <!--        <td th:text="${translation.englishTranscription}"></td>-->
+        <td th:text="${translation.successAttempts}"></td>
+        <td th:text="${#temporals.format(translation.initDate, 'HH:mm dd.MM.yy')}"></td>
 
-    <td th:datetime="${translation.initDate}"></td>
-    <!--        <a th:href="@{/edit/{remindId}(remindId=${remind.id})}">Edit</a>-->
+        <td th:datetime="${translation.initDate}"></td>
+        <!--        <a th:href="@{/edit/{remindId}(remindId=${remind.id})}">Edit</a>-->
     </tbody>
 </table>
 

@@ -14,7 +14,13 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
         format_sql: true
+  yandex:
+    url: "https://translate.api.cloud.yandex.net/translate/v2/translate"
+    key_id: aje9icqfeq0qrdslfh1d
+    secret_key: AQVNyZM092ga23lXxC3CKt1IYMa_CwRdL1KGynoq
+
 
 server:
   port: 9090
+
 

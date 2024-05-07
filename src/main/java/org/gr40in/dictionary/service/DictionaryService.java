@@ -6,6 +6,8 @@ import org.gr40in.dictionary.dao.Translation;
 import org.gr40in.dictionary.dto.TranslationDto;
 import org.gr40in.dictionary.dto.TranslationMapper;
 import org.gr40in.dictionary.repository.DictionaryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DictionaryService {
+    private static final Logger log = LoggerFactory.getLogger(DictionaryService.class);
     private final DictionaryRepository dictionaryRepository;
 
     private final List<TranslateService> translateServices;
@@ -30,18 +33,22 @@ public class DictionaryService {
         dto.setId(null);
         var translation = translationMapper.toEntity(dto);
 
-        String engExp = translation.getEnglishExpression();
-        String rusExp = translation.getRussianExpression();
+        String engExp = translation.getEnglishExpression()==null?"":translation.getEnglishExpression();
+        String rusExp = translation.getRussianExpression()==null?"":translation.getRussianExpression();
 
         if (!engExp.isBlank() && rusExp.isBlank()) {
             translation.setRussianExpression(getRussianTranslate(engExp));
+            log.error(translation.getRussianExpression() + "ehat");
         } else if (engExp.isBlank() && !rusExp.isBlank()) {
             translation.setEnglishExpression(getEnglishTranslate(rusExp));
         }
 
         dto.setInitDate(LocalDateTime.now());
 
-        Translation save = dictionaryRepository.save(translationMapper.toEntity(dto));
+
+        Translation save = dictionaryRepository.save(translation);
+        log.error(save.getEnglishExpression());
+        log.error(save.getRussianExpression());
         return translationMapper.toDto(save);
     }
 
