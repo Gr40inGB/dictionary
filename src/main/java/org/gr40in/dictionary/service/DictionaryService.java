@@ -2,12 +2,11 @@ package org.gr40in.dictionary.service;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.gr40in.dictionary.dao.Translation;
 import org.gr40in.dictionary.dto.TranslationDto;
 import org.gr40in.dictionary.dto.TranslationMapper;
 import org.gr40in.dictionary.repository.DictionaryRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,46 +15,42 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DictionaryService {
-    private static final Logger log = LoggerFactory.getLogger(DictionaryService.class);
     private final DictionaryRepository dictionaryRepository;
 
     private final List<TranslateService> translateServices;
-//    private final GoogleTranslateService googleTranslateService;
-//    private final YandexTranslateService yandexTranslateService;
-//    private final LocalTranslateService localTranslateService;
 
     private final TranslationMapper translationMapper;
 
     public TranslationDto createTranslation(TranslationDto dto) {
+        // delete id if exists - cause id will take from database
         dto.setId(null);
         var translation = translationMapper.toEntity(dto);
 
-        String engExp = translation.getEnglishExpression()==null?"":translation.getEnglishExpression();
-        String rusExp = translation.getRussianExpression()==null?"":translation.getRussianExpression();
+        String engExp = translation.getEnglishExpression() == null ? "" : translation.getEnglishExpression();
+        String rusExp = translation.getRussianExpression() == null ? "" : translation.getRussianExpression();
 
+        // we have english - so we need to translate from eng -> to russian
         if (!engExp.isBlank() && rusExp.isBlank()) {
             translation.setRussianExpression(getRussianTranslate(engExp));
-            log.error(translation.getRussianExpression() + "ehat");
-        } else if (engExp.isBlank() && !rusExp.isBlank()) {
+        }  // we have russian - so we need to translate from russian -> to english
+        else if (engExp.isBlank() && !rusExp.isBlank()) {
             translation.setEnglishExpression(getEnglishTranslate(rusExp));
         }
 
-        dto.setInitDate(LocalDateTime.now());
-
+        translation.setInitDate(LocalDateTime.now());
 
         Translation save = dictionaryRepository.save(translation);
-        log.error(save.getEnglishExpression());
-        log.error(save.getRussianExpression());
         return translationMapper.toDto(save);
     }
 
     private String getRussianTranslate(String englishExpression) {
         for (var transService : translateServices) {
             var russianTranslate = transService.getRussianTranslate(englishExpression);
-            if (russianTranslate!=null && !russianTranslate.isBlank()) return russianTranslate;
+            if (russianTranslate != null && !russianTranslate.isBlank()) return russianTranslate;
         }
         return "";
     }

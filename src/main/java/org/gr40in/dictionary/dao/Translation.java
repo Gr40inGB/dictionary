@@ -23,6 +23,7 @@ public class Translation {
 
     @Column(unique = true)
     private String englishExpression;
+
     private String russianExpression;
     private String englishTranscription;
 

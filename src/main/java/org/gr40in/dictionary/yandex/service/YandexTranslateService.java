@@ -1,21 +1,15 @@
 package org.gr40in.dictionary.yandex.service;
 
-import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.gr40in.dictionary.service.TranslateService;
-import org.gr40in.dictionary.yandex.dao.YandexIAMToken;
 import org.gr40in.dictionary.yandex.dto.RequestToYandex;
 import org.gr40in.dictionary.yandex.dto.ResponseFromYandex;
 import org.gr40in.dictionary.yandex.dto.Translations;
 import org.gr40in.dictionary.yandex.repository.YandexIAMTokenRepository;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -29,22 +23,19 @@ public class YandexTranslateService implements TranslateService {
     private final YandexIAMTokenRepository yandexIAMTokenRepository;
     private final YandexIAMTokenService yandexIAMTokenService;
 
-//    private final String FOLDER = "b1gd9mrb165uqhrlebqn";
+    //    private final String FOLDER = "b1gd9mrb165uqhrlebqn";
     private final String FOLDER = "aje9icqfeq0qrdslfh1d";
     private final String OAUTH_TOKEN = "y0_AgAAAAAQhq0fAATuwQAAAAEDjzSzAABvD1vfUINFBLu-z8yBR02IX3C_4Q";
     private final String BASE_URI = "https://iam.api.cloud.yandex.net/iam/v1/tokens";
     private final String TRANSLATE_URL = "https://translate.api.cloud.yandex.net/translate/v2/translate";
-
-//    private String getFreshTokenBearer() {
-//        return yandexIAMTokenService.getFreshAccessTokenBearer();
-//    }
 
     @Override
     public String getEnglishTranslate(String russianExpression) {
         var request = RequestToYandex.builder()
                 .sourceLanguageCode("ru")
                 .targetLanguageCode("en")
-                .texts(russianExpression.split("\\s"))
+//                .texts(russianExpression.split("\\s"))
+                .texts(new String[]{russianExpression})//.split("\\s"))
 //                .folderId(FOLDER)
                 .build();
         return getTranslate(request);
@@ -55,7 +46,7 @@ public class YandexTranslateService implements TranslateService {
         var request = RequestToYandex.builder()
                 .sourceLanguageCode("en")
                 .targetLanguageCode("ru")
-                .texts(englishExpression.split("\\s"))
+                .texts(new String[]{englishExpression})//.split("\\s"))
 //                .folderId(FOLDER)
                 .build();
         return getTranslate(request);

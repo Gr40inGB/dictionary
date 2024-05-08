@@ -3,13 +3,11 @@ package org.gr40in.dictionary.controller;
 import lombok.RequiredArgsConstructor;
 import org.gr40in.dictionary.dto.TranslationDto;
 import org.gr40in.dictionary.service.DictionaryService;
-import org.gr40in.dictionary.yandex.service.YandexTranslateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -19,7 +17,6 @@ public class DictionaryController {
 
     private static final Logger log = LoggerFactory.getLogger(DictionaryController.class);
     private final DictionaryService dictionaryService;
-    private final YandexTranslateService yandexTranslateService;
 
     @GetMapping
     public String newTranslate(Model model) {

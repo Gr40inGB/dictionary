@@ -28,6 +28,7 @@
     <div class="main__buttons">
         <!--        <button class="button" type="button" onclick="translate()">Translate</button>-->
         <button class="button" type="button" onclick="translate_f()">Translate</button>
+        <button class="button" type="reset">Clear</button>
         <!--        <button class="button" type="submit" th:name="${'action_type'}" th:value="Add">Add</button>-->
         <button class="button" type="submit">Add</button>
     </div>
@@ -48,51 +49,27 @@
             initDate: "2024-05-07T12:00:00" // Example date format
         };
 
-        // Implement your translation logic here, for example, using AJAX to send the English expression to the server and receive the translation
-        // Send an AJAX request to the server to translate the English expression
         $.ajax({
             url: '/api/translate',
             type: 'post',
             ContentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             data: {
-                id: 0, // Replace with actual values or retrieve from form fields
+                id: 0,
                 englishExpression: document.getElementById('english').value,
-                russianExpression: ' ',
+                russianExpression: document.getElementById('russian').value,
                 englishTranscription: "",
                 successAttempts: 0,
-                initDate: "2024-05-07T12:00:00", // Example date format
+                initDate: "1001-01-01T12:00:00", // Example date format
             },
             success: function (data) {
-                // Update the value of the Russian expression input field with the translated text
                 console.log(data.russianExpression);
+                $('#english').val(data.englishExpression)
                 $('#russian').val(data.russianExpression);
             },
             error: function () {
-                // Handle errors
                 alert("An error occurred while translating.");
             }
         });
-
-
-        // $.ajax({
-        //     url: '/api/translate',
-        //     type: 'post',
-        //     dataType: 'APPLICATION_FORM_URLENCODED_VALUE',
-        //     data: Value.stringify(translationDto),
-        //     success: function (data) {
-        //         // Update the value of the Russian expression input field with the translated text
-        //         $('#russian').val(data.russianExpression);
-        //     },
-        //     error: function () {
-        //         // Handle errors
-        //         alert("An error occurred while translating.");
-        //     }
-        // });
-        // For demonstration, let's assume the translation is received here
-        // var translatedText = "Translated Russian text"; // Replace this with your actual translation
-
-        // Set the translated text to the Russian expression input field
-        // document.getElementById('russian').value = translatedText;
     }
 </script>
 
