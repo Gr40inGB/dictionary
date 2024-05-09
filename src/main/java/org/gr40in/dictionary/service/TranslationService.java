@@ -3,13 +3,9 @@ package org.gr40in.dictionary.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.gr40in.dictionary.dao.Translation;
-import org.gr40in.dictionary.dto.MemorizationDto;
 import org.gr40in.dictionary.dto.TranslationDto;
 import org.gr40in.dictionary.dto.TranslationMapper;
 import org.gr40in.dictionary.repository.TranslationRepository;
-import org.gr40in.dictionary.service.exception.ServiceLayerException;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 //import java.net.http.HttpResponse;
@@ -18,7 +14,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DictionaryService {
+public class TranslationService {
     private final TranslationRepository translationRepository;
 
     private final List<TranslateService> translateServices;
@@ -76,33 +72,19 @@ public class DictionaryService {
         return "";
     }
 
-    public TranslationDto createTranslation(String englishExpression) {
-        var translation = getTranslationOfExpression(englishExpression);
-        var saved = translationRepository.save(translation);
-        return translationMapper.toDto(saved);
-    }
-
     public List<TranslationDto> findAllTranslation() {
         return translationRepository.findAll().stream()
                 .map(translationMapper::toDto)
                 .toList();
     }
 
-    private Translation getTranslationOfExpression(String englishExpression) {
-        Translation translation = new Translation();
-//        translation.setRussianExpression(test());
-//        translation.setEnglishExpression(englishExpression);
-//        translation.setRussianExpression(getTranslation(englishExpression));
-        return translation;
+    public TranslationDto findTranslationById(Long id) {
+        return translationRepository.findById(id)
+                .map(translationMapper::toDto).orElse(null);
     }
 
-//    public List<MemorizationDto> findLast10Translations(Long userId) {
-//        Pageable pageable = PageRequest.of(0, 10); // Page 0, with 10 records per page
-//        return translationRepository.findTop10ByOrderByInitDateDesc(pageable)
-//                .stream()
-//                .map(translationMapper::toDto)
-//                .toList();
-//    }
-
-
+    public TranslationDto findTranslationByEnglishExpression(String englishExpression) {
+        return translationRepository.findByEnglishExpression(englishExpression)
+                .map(translationMapper::toDto).orElse(null);
+    }
 }

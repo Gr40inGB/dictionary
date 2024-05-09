@@ -3,7 +3,7 @@ package org.gr40in.dictionary.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.gr40in.dictionary.dto.TranslationDto;
-import org.gr40in.dictionary.service.DictionaryService;
+import org.gr40in.dictionary.service.TranslationService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("api")
 public class DictionaryControllerApi {
-    private final DictionaryService service;
+    private final TranslationService service;
 
     @RequestMapping(value = "translate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<TranslationDto> test(TranslationDto translationDto) {
@@ -23,4 +23,6 @@ public class DictionaryControllerApi {
                 .ok()
                 .body(service.createTranslation(translationDto));
     }
+
+
 }
