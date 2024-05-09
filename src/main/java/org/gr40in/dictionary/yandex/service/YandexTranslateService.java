@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@Order(1)
+@Order(2)
 @RequiredArgsConstructor
 public class YandexTranslateService implements TranslateService {
 

@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 @Data
 @ToString
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class TranslationDto {
     private Long id;
     private String englishExpression;

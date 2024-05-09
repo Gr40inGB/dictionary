@@ -1,28 +1,31 @@
 package org.gr40in.dictionary.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.gr40in.dictionary.dao.User;
 import org.gr40in.dictionary.dto.TranslationDto;
 import org.gr40in.dictionary.service.DictionaryService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.gr40in.dictionary.service.MemorizationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("translate")
 public class DictionaryController {
 
-    private static final Logger log = LoggerFactory.getLogger(DictionaryController.class);
     private final DictionaryService dictionaryService;
+    private final MemorizationService memorizationService;
+    private final User currentUser;
 
     @GetMapping
     public String newTranslate(Model model) {
         if (!model.containsAttribute("translate_current"))
             model.addAttribute("translate_current", new TranslationDto());
-        model.addAttribute("translations", dictionaryService.findLast10Translations(1L));
+        model.addAttribute("translations", memorizationService.findLast10ByUserId(currentUser.getId()));
         return "index";
     }
 
@@ -36,8 +39,6 @@ public class DictionaryController {
 //        model.addAttribute("translations", dictionaryService.findLast10Translations(1L));
         return "index";
     }
-
-
 
     @PostMapping("create")
     public String createTranslate(
@@ -57,7 +58,7 @@ public class DictionaryController {
         } else if ("Add".equals(translateAction)) {
             log.error("Add action is 'Add'");
             model.addAttribute("translate_current", translationDto);
-            model.addAttribute("translations", dictionaryService.findLast10Translations(1L));
+            model.addAttribute("translations", memorizationService.findLast10ByUserId(currentUser.getId()));
             return "redirect:/translate";
         }
 
@@ -69,7 +70,7 @@ public class DictionaryController {
     public String getTranslation(@ModelAttribute TranslationDto translationDto, Model model) {
         translationDto = dictionaryService.createTranslation(translationDto);
         model.addAttribute("translate_current", translationDto);
-        model.addAttribute("translations", dictionaryService.findLast10Translations(1L));
+        model.addAttribute("translations", memorizationService.findLast10ByUserId(currentUser.getId()));
         return "index";
     }
 }

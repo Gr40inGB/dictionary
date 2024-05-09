@@ -3,7 +3,7 @@ package org.gr40in.dictionary.init;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.gr40in.dictionary.dao.Translation;
-import org.gr40in.dictionary.repository.DictionaryRepository;
+import org.gr40in.dictionary.repository.TranslationRepository;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InitDatabase {
 
-    private final DictionaryRepository repository;
+    private final TranslationRepository repository;
 
     private final String initFilePath = "src/main/resources/dictionary.txt";
 
@@ -30,8 +30,6 @@ public class InitDatabase {
 
         List<Translation> list = new ArrayList<>();
         if (!repository.findAll().isEmpty()) return;
-
-
 
         try (BufferedReader br = new BufferedReader(new FileReader(initFilePath))) {
             String line;

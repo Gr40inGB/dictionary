@@ -27,11 +27,11 @@ public class Translation {
     private String russianExpression;
     private String englishTranscription;
 
-    private LocalDateTime initDate;
+//    private LocalDateTime initDate;
 
-    private Integer successAttempts;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<User> users;
+//    private Integer successAttempts;
+//
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    private List<User> users;
 
 }

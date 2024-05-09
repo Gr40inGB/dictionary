@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th> ID</th>
+        <th> NAME</th>
+        <th> EMAIL</th>
+        <th> ROLE</th>
+    </tr>
+    </thead>
+    <tbody>
+<!--    <tr th:if="${users.empty}">-->
+<!--        <td colspan="2"> No Users</td>-->
+<!--    </tr>-->
+    <tr th:each="user : ${users}">
+        <td><span th:text="${user.id}"> id </span></td>
+        <td><span th:text="${user.name}"> name </span></td>
+        <td><span th:text="${user.email}"> email </span></td>
+        <td><span th:text="${user.roles}"> role </span></td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:insert="~{fragment::logout}"></div>
+<a th:href="@{translate}">dictionary</a><br>
+</body>
+</html>

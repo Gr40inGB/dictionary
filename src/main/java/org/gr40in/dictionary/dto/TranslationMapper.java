@@ -12,8 +12,6 @@ public class TranslationMapper {
                 .englishExpression(translation.getEnglishExpression())
                 .russianExpression(translation.getRussianExpression())
                 .englishTranscription(translation.getEnglishTranscription())
-                .initDate(translation.getInitDate())
-                .successAttempts(translation.getSuccessAttempts())
                 .build();
     }
 
@@ -23,8 +21,6 @@ public class TranslationMapper {
                 .englishExpression(translationDto.getEnglishExpression())
                 .russianExpression(translationDto.getRussianExpression())
                 .englishTranscription(translationDto.getEnglishTranscription())
-                .initDate(translationDto.getInitDate())
-                .successAttempts(translationDto.getSuccessAttempts())
                 .build();
     }
 

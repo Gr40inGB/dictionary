@@ -1,25 +1,24 @@
 package org.gr40in.dictionary.service;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.gr40in.dictionary.dao.Translation;
+import org.gr40in.dictionary.dto.MemorizationDto;
 import org.gr40in.dictionary.dto.TranslationDto;
 import org.gr40in.dictionary.dto.TranslationMapper;
-import org.gr40in.dictionary.repository.DictionaryRepository;
+import org.gr40in.dictionary.repository.TranslationRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 //import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class DictionaryService {
-    private final DictionaryRepository dictionaryRepository;
+    private final TranslationRepository translationRepository;
 
     private final List<TranslateService> translateServices;
 
@@ -41,13 +40,14 @@ public class DictionaryService {
             translation.setEnglishExpression(getEnglishTranslate(rusExp));
         }
 
-        translation.setInitDate(LocalDateTime.now());
+//        translation.setInitDate(LocalDateTime.now());
 
-        Translation save = dictionaryRepository.save(translation);
+        Translation save = translationRepository.save(translation);
         return translationMapper.toDto(save);
     }
 
     private String getRussianTranslate(String englishExpression) {
+
         for (var transService : translateServices) {
             var russianTranslate = transService.getRussianTranslate(englishExpression);
             if (russianTranslate != null && !russianTranslate.isBlank()) return russianTranslate;
@@ -63,19 +63,19 @@ public class DictionaryService {
         return "";
     }
 
-    public TranslationDto createTranslation(String englishExpression) throws UnirestException {
+    public TranslationDto createTranslation(String englishExpression) {
         var translation = getTranslationOfExpression(englishExpression);
-        var saved = dictionaryRepository.save(translation);
+        var saved = translationRepository.save(translation);
         return translationMapper.toDto(saved);
     }
 
     public List<TranslationDto> findAllTranslation() {
-        return dictionaryRepository.findAll().stream()
+        return translationRepository.findAll().stream()
                 .map(translationMapper::toDto)
                 .toList();
     }
 
-    private Translation getTranslationOfExpression(String englishExpression) throws UnirestException {
+    private Translation getTranslationOfExpression(String englishExpression) {
         Translation translation = new Translation();
 //        translation.setRussianExpression(test());
 //        translation.setEnglishExpression(englishExpression);
@@ -83,13 +83,13 @@ public class DictionaryService {
         return translation;
     }
 
-    public List<TranslationDto> findLast10Translations(Long userId) {
-        Pageable pageable = PageRequest.of(0, 10); // Page 0, with 10 records per page
-        return dictionaryRepository.findTop10ByOrderByInitDateDesc(pageable)
-                .stream()
-                .map(translationMapper::toDto)
-                .toList();
-    }
+//    public List<MemorizationDto> findLast10Translations(Long userId) {
+//        Pageable pageable = PageRequest.of(0, 10); // Page 0, with 10 records per page
+//        return translationRepository.findTop10ByOrderByInitDateDesc(pageable)
+//                .stream()
+//                .map(translationMapper::toDto)
+//                .toList();
+//    }
 
 
 }
