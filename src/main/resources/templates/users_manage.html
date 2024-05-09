@@ -15,9 +15,6 @@
     </tr>
     </thead>
     <tbody>
-<!--    <tr th:if="${users.empty}">-->
-<!--        <td colspan="2"> No Users</td>-->
-<!--    </tr>-->
     <tr th:each="user : ${users}">
         <td><span th:text="${user.id}"> id </span></td>
         <td><span th:text="${user.name}"> name </span></td>

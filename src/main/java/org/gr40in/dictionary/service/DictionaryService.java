@@ -7,6 +7,7 @@ import org.gr40in.dictionary.dto.MemorizationDto;
 import org.gr40in.dictionary.dto.TranslationDto;
 import org.gr40in.dictionary.dto.TranslationMapper;
 import org.gr40in.dictionary.repository.TranslationRepository;
+import org.gr40in.dictionary.service.exception.ServiceLayerException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,9 +25,10 @@ public class DictionaryService {
 
     private final TranslationMapper translationMapper;
 
-    public TranslationDto createTranslation(TranslationDto dto) {
+    public TranslationDto createTranslation(TranslationDto dto)  {
         // delete id if exists - cause id will take from database
         dto.setId(null);
+
         var translation = translationMapper.toEntity(dto);
 
         String engExp = translation.getEnglishExpression() == null ? "" : translation.getEnglishExpression();
@@ -34,13 +36,24 @@ public class DictionaryService {
 
         // we have english - so we need to translate from eng -> to russian
         if (!engExp.isBlank() && rusExp.isBlank()) {
+            var temp = translationRepository.findByEnglishExpression(engExp);
+            if (temp.isPresent()) {
+                return translationMapper.toDto(temp.get());
+            }
             translation.setRussianExpression(getRussianTranslate(engExp));
         }  // we have russian - so we need to translate from russian -> to english
         else if (engExp.isBlank() && !rusExp.isBlank()) {
+            var temp = translationRepository.findByRussianExpression(rusExp);
+            if (temp.isPresent()) {
+                return translationMapper.toDto(temp.get());
+            }
             translation.setEnglishExpression(getEnglishTranslate(rusExp));
-        }
+        } // if incorrect input - we'll just clean dto
+        else return new TranslationDto();
 
-//        translation.setInitDate(LocalDateTime.now());
+//        if (translation.getEnglishExpression().isBlank() || translation.getRussianExpression().isBlank()) {
+//            throw new ServiceLayerException("something wrong with translation");
+//        }
 
         Translation save = translationRepository.save(translation);
         return translationMapper.toDto(save);

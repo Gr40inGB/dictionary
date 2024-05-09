@@ -16,7 +16,7 @@ public class DictionaryControllerApi {
     private final DictionaryService service;
 
     @RequestMapping(value = "translate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<TranslationDto> test(TranslationDto translationDto)  {
+    public ResponseEntity<TranslationDto> test(TranslationDto translationDto) {
         log.info("@RequestMapping(value = \"translate\",method = RequestMethod.GET)");
 
         return ResponseEntity

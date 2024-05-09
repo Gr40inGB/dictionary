@@ -33,13 +33,14 @@ public class SecurityConfiguration {
 //                                        .requestMatchers("public*").permitAll()
 //                                .requestMatchers("login*").permitAll()
                                         .requestMatchers("*images*").permitAll()
+//                                        .requestMatchers("*css*").permitAll()
                                         .anyRequest().permitAll()
                         )
 
                         .formLogin(form -> form
                                 .loginPage("/login")
                                 .permitAll()
-                                .defaultSuccessUrl("/users", true))
+                                .defaultSuccessUrl("/users",true))
 //                        .oauth2Login()
                         .build();
     }

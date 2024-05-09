@@ -1,11 +1,15 @@
 package org.gr40in.dictionary.controller;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.gr40in.dictionary.dao.User;
 import org.gr40in.dictionary.dto.TranslationDto;
+import org.gr40in.dictionary.security.AppUserDetails;
 import org.gr40in.dictionary.service.DictionaryService;
 import org.gr40in.dictionary.service.MemorizationService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,50 +23,51 @@ public class DictionaryController {
 
     private final DictionaryService dictionaryService;
     private final MemorizationService memorizationService;
-    private final User currentUser;
+    private Long currentUserId;
 
-    @GetMapping
+    @PostConstruct
+    public void init() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
+            currentUserId = ((AppUserDetails) authentication.getPrincipal()).getId();
+        } else {
+            currentUserId = null;
+        }
+    }
+
+    private Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
+            return ((AppUserDetails) authentication.getPrincipal()).getId();
+        }
+        return null;
+    }
+
+    @GetMapping()
     public String newTranslate(Model model) {
         if (!model.containsAttribute("translate_current"))
             model.addAttribute("translate_current", new TranslationDto());
-        model.addAttribute("translations", memorizationService.findLast10ByUserId(currentUser.getId()));
+        model.addAttribute("style.css", "static/style.css");
+        model.addAttribute("memorizations", memorizationService.findLast10ByUserId(getCurrentUserId()));
         return "index";
     }
 
 
-    @PostMapping
+    @PostMapping("no")
     public String translated(@ModelAttribute("translate_current") TranslationDto translationDto, Model model) {
         var translatedDto = dictionaryService.createTranslation(translationDto);
         translationDto.setEnglishExpression(translatedDto.getEnglishExpression());
         translationDto.setRussianExpression(translatedDto.getRussianExpression());
-//        model.addAttribute("translate_current", new TranslationDto());
-//        model.addAttribute("translations", dictionaryService.findLast10Translations(1L));
+        translationDto.setId(translatedDto.getId());
         return "index";
     }
 
-    @PostMapping("create")
+    @PostMapping("memorized")
     public String createTranslate(
-            @RequestParam(name = "action_type", required = false) String translateAction,
-            @RequestParam(name = "action_add", required = false) String addAction,
             @ModelAttribute TranslationDto translationDto, RedirectAttributes redirectAttributes,
             Model model) {
-
-        translationDto = dictionaryService.createTranslation(translationDto);
-        log.info("Translation created: {}", translationDto);
-
-        if ("Translate".equals(translateAction)) {
-            log.error("Translation action is 'Translate'");
-//            model.addAttribute(redirectAttributes);
-//            model.addAttribute("translations", dictionaryService.findLast10Translations(1L));
-            return newTranslate(model);
-        } else if ("Add".equals(translateAction)) {
-            log.error("Add action is 'Add'");
-            model.addAttribute("translate_current", translationDto);
-            model.addAttribute("translations", memorizationService.findLast10ByUserId(currentUser.getId()));
-            return "redirect:/translate";
-        }
-
-//        redirectAttributes.addFlashAttribute("message", "Translation created successfully");
+        log.info("createTranslate {}", translationDto);
+        memorizationService.create(translationDto, getCurrentUserId());
         return "redirect:/translate";
     }
 
@@ -70,7 +75,7 @@ public class DictionaryController {
     public String getTranslation(@ModelAttribute TranslationDto translationDto, Model model) {
         translationDto = dictionaryService.createTranslation(translationDto);
         model.addAttribute("translate_current", translationDto);
-        model.addAttribute("translations", memorizationService.findLast10ByUserId(currentUser.getId()));
+        model.addAttribute("translations", memorizationService.findLast10ByUserId(getCurrentUserId()));
         return "index";
     }
 }

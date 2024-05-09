@@ -21,6 +21,10 @@ public class AppUserDetails implements UserDetails {
         return user.getRoles();
     }
 
+    public Long getId() {
+        return user.getId();
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();

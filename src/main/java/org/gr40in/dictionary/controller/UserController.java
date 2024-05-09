@@ -33,12 +33,10 @@ public class UserController {
 //        return "users_manage";
 //    }
 
-//    @GetMapping("{id}")
-//    public String getUserById(@PathVariable Long id, Model model) {
-//        User userByName = userService.getUserByName(id);
-//        ArrayList<User> users = new ArrayList<>();
-//        users.add(userByName);
-//        model.addAttribute("users", users);
-//        return "users_manage";
-//    }
+    @GetMapping("user/{id}")
+    public String getUserById(@PathVariable Long id, Model model) {
+        User userById = userService.getUserById(id);
+        model.addAttribute("user", userById);
+        return "user_page";
+    }
 }
