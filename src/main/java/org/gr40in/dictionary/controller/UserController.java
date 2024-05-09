@@ -27,12 +27,6 @@ public class UserController {
         return "login";
     }
 
-//    @GetMapping("management")
-//    public String getUsers(Model model) {
-//        model.addAttribute("users", userService.getUsers());
-//        return "users_manage";
-//    }
-
     @GetMapping("user/{id}")
     public String getUserById(@PathVariable Long id, Model model) {
         User userById = userService.getUserById(id);
