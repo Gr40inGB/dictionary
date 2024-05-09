@@ -15,7 +15,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-//@Table(name = "translation")
 public class Translation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,12 +25,5 @@ public class Translation {
 
     private String russianExpression;
     private String englishTranscription;
-
-//    private LocalDateTime initDate;
-
-//    private Integer successAttempts;
-//
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    private List<User> users;
 
 }
