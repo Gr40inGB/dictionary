@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface TranslationRepository extends JpaRepository<Translation, Long> {
@@ -14,4 +16,8 @@ public interface TranslationRepository extends JpaRepository<Translation, Long> 
     Optional<Translation> findByEnglishExpression(String englishExpression);
 
     Optional<Translation> findByRussianExpression(String russianExpression);
+
+    long count();
+
+    Optional<List<Translation>> findAllByIdIn(Collection<Long> id);
 }

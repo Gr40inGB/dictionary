@@ -6,11 +6,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemorizationRepository extends JpaRepository<Memorization, Long> {
     Page<Memorization> findTop10ByUserIdOrderByInitDateDesc(Long userId, Pageable pageable);
 
     Optional<Memorization> findByUserIdAndTranslationId(Long userId, Long translationId);
+
+    Page<Memorization> findALLByUserId(Long userId, Pageable pageable);
+
+    Optional<List<Memorization>> getAll();
+
+    long count();
 
 }

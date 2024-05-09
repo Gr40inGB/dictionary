@@ -15,7 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 @Service
 @Slf4j
@@ -52,6 +55,37 @@ public class MemorizationService {
         memorizationRepository.save(memorizationEntity);
 
         return memorizationMapper.toDto(memorizationEntity);
+    }
+
+    public List<MemorizationDto> findAllByUserId(Long userId) {
+        Pageable pageable = PageRequest.of(0, 100);
+        return memorizationRepository.findALLByUserId(userId, pageable)
+                .stream()
+                .map(memorizationMapper::toDto)
+                .toList();
+    }
+
+    public List<MemorizationDto> getAll() {
+        if (memorizationRepository.findAll().isEmpty()) {
+            return new ArrayList<>();
+        }
+        return memorizationRepository.getAll()
+                .get()
+                .stream()
+                .map(memorizationMapper::toDto)
+                .toList();
+    }
+
+    public List<MemorizationDto> getRandomRussianTranslation() {
+        Random random = new Random();
+        var max = memorizationRepository.count();
+        List<Long> randomIds = new ArrayList<>(100);
+        for (int i = 0; i < 100; i++) randomIds.add(random.nextLong(max));
+        var list = memorizationRepository.findAllById(randomIds);
+        if (list.isEmpty()) return new ArrayList<>();
+        return list.stream()
+                .map(memorizationMapper::toDto)
+                .toList();
     }
 
 }
