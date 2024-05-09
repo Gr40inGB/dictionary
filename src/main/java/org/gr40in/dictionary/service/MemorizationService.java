@@ -69,8 +69,7 @@ public class MemorizationService {
         if (memorizationRepository.findAll().isEmpty()) {
             return new ArrayList<>();
         }
-        return memorizationRepository.getAll()
-                .get()
+        return memorizationRepository.findAll()
                 .stream()
                 .map(memorizationMapper::toDto)
                 .toList();

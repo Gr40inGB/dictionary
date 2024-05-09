@@ -39,7 +39,6 @@ public class UserService {
         userForEdit.setName(user.getName());
         userForEdit.setEmail(user.getEmail());
         userForEdit.setPassword(passwordEncoder.encode(user.getPassword()));
-//        userForEdit.setEnabled(user.isEnabled());
         userForEdit.setRoles(user.getRoles());
         userRepository.save(userForEdit);
     }

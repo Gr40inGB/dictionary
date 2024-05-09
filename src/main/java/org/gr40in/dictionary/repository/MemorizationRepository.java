@@ -16,7 +16,8 @@ public interface MemorizationRepository extends JpaRepository<Memorization, Long
 
     Page<Memorization> findALLByUserId(Long userId, Pageable pageable);
 
-    Optional<List<Memorization>> getAll();
+    List<Memorization> findAll();
+//     List<Memorization> findAll();
 
     long count();
 

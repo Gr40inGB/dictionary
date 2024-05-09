@@ -27,22 +27,21 @@ public class SecurityConfiguration {
 //        http.getConfigurer(OAuth2AuthorizationServerAutoConfiguration)
         return
                 http.csrf(AbstractHttpConfigurer::disable)
-                        .authorizeHttpRequests(auth -> auth
-                                        .requestMatchers("management*", "users*").hasAuthority("ADMIN")
-                                        .requestMatchers("api/*", "translate*", "users").hasAnyAuthority("ADMIN", "USER")
-//                                        .requestMatchers("public*").permitAll()
-//                                .requestMatchers("login*").permitAll()
-                                        .requestMatchers("*images*").permitAll()
-//                                        .requestMatchers("*css*").permitAll()
-                                        .anyRequest().permitAll()
-                        )
+                .authorizeHttpRequests(auth -> auth
+                                .requestMatchers("management*", "users*").hasAuthority("ADMIN")
+                                .requestMatchers("swagger-ui*").permitAll()
+                                .requestMatchers("api/*", "translate*", "users")
+                                    .hasAnyAuthority("ADMIN", "USER")
+                                .requestMatchers("*images*").permitAll()
+                                .anyRequest().permitAll()
+                )
 
-                        .formLogin(form -> form
-                                .loginPage("/login")
-                                .permitAll()
-                                .defaultSuccessUrl("/users",true))
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/users",true))
 //                        .oauth2Login()
-                        .build();
+                .build();
     }
 
     @Bean
