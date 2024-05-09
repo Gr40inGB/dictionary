@@ -76,7 +76,7 @@ public class MemorizationService {
                 .toList();
     }
 
-    public List<MemorizationDto> getRandomRussianTranslation() {
+    public List<MemorizationDto> getRandomMemorizationDtos() {
         Random random = new Random();
         var max = memorizationRepository.count();
         List<Long> randomIds = new ArrayList<>(100);
@@ -88,4 +88,8 @@ public class MemorizationService {
                 .toList();
     }
 
+    public Boolean checkChoice(String engExp, String rusExp) {
+        var choosed = translationRepository.findByEnglishExpression(engExp);
+        return choosed.map(translation -> translation.getRussianExpression().equals(rusExp)).orElse(false);
+    }
 }

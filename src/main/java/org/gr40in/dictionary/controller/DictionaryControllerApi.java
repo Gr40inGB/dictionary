@@ -40,7 +40,7 @@ public class DictionaryControllerApi {
     public ResponseEntity<List<MemorizationDto>> getAllMemorizations() {
         return ResponseEntity
                 .ok()
-                .body(memorizationService.)
+                .body(memorizationService.getAll());
     }
 
 

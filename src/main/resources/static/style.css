@@ -61,7 +61,6 @@ label,
     border-bottom: 2px solid #009788;
 }
 
-
 :root {
     --bc2: #02254b;
 }
@@ -72,7 +71,6 @@ label,
     gap: 20px;
     justify-content: flex-end;
     align-items: center;
-    /*width: 5.5rem;*/
     font-size: .575em;
 }
 
@@ -84,8 +82,6 @@ label,
 }
 
 .button {
-    /*padding-top: 100px;*/
-    /*display: none;*/
     color: #fff;
     border: 2px solid var(--bc2);
     background-color: var(--bc2);
@@ -101,7 +97,6 @@ label,
     color: #02254b;
     border-color: #02254b;
     background-color: transparent;
-    /*transition: ease .3s;*/
 }
 
 .button:active {
@@ -114,33 +109,11 @@ label,
     margin: 0 auto;
 
     width: 100%;
-    /*display: flex;*/
-
-    /*list-style-type: none;*/
-    /*display: flex;*/
-
-    /*padding: 0;*/
 }
 
 .translation-item {
-    /*width: 700px;*/
 
-    /*margin-bottom: 10px;*/
-    /*padding: 10px;*/
-    /*border: 1px solid #ccc;*/
-    /*border-radius: 5px;*/
-    /*background-color: #f9f9f9;*/
 }
 
-/*.translation-item h2 {*/
-/*    margin-top: 0;*/
-/*}*/
 
-/*.translation-item p {*/
-/*    margin-bottom: 5px;*/
-/*}*/
-
-/*.translation-item .init-date {*/
-/*    font-style: italic;*/
-/*}*/
 
