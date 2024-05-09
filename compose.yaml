@@ -12,4 +12,3 @@ services:
       - 5565:5432
 volumes:
   dictionary:
-#    external: true
