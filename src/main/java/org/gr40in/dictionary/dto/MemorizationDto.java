@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class MemorizationDto {
     Long id;
     Long translation_id;
